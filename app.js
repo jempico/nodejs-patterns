@@ -4,8 +4,6 @@ const {
   writeFile,
 } = require("fs");
 
-const {util} = require("util");
-
 const {join, resolve} = require("path");
 
 const inbox = join(__dirname, "inbox");
@@ -20,41 +18,36 @@ const reverseText = str =>
 
 //Proposal #1 to solve callback hell: estructuring callbacks.
 
-function readDirectory(dirpath, readCallback) {
+const readDirectory = (dirpath, readCallback) => {
   readdir(dirpath, (error, files) => {
-    if (error) {
-        return console.log("Error: Folder inaccessible")
-    } else { 
-        readCallback(files);
-    }
+    if (error) return readCallback("Error: Folder inaccessible")
+    readCallback(null, files);
   })
 } 
 
-function copyData(file, copyCallback) {
+const copyData = (file, copyCallback) => {
   readFile(join(inbox, file), "utf8", (error, data) => {
-    if (error) { return console.log("Error: File error");
-    } else { 
-    copyCallback(data);
-    }
+    if (error) return copyCallback("Error: File error");
+    copyCallback(null, data);
   })
 } 
 
-function transferData(data, newfile) {
+const transferData = (data, newfile) => {
   writeFile(join(outbox, newfile), reverseText(data), error => {
-    if (error) { return console.log("Error: File could not be saved!"); 
-    } else { 
+    if (error) return console.log("Error: File could not be saved!"); 
     console.log(`${newfile} was successfully saved in the outbox!`); 
-    } 
   })
 }
 
 
-readDirectory(inbox, (files) => { 
-  files.forEach((file) => { 
-    copyData(file, (data) => { 
-      transferData(data, file)
+readDirectory(inbox, (err, files) => { 
+  if (err) console.log(err)
+    files.forEach((file) => { 
+      copyData(file, (err, data) => { 
+        if (err) console.log(err)
+          transferData(data, file)
+      }) 
     }) 
-  }) 
 })
 
 
