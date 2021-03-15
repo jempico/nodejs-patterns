@@ -18,6 +18,8 @@ const reverseText = str =>
     .join("");
 
 
+//Proposal #1 to solve callback hell: with callbacks.
+
 function readDirectory(dirpath, readCallback) {
   readdir(inbox, (error, files) => {
     if (error) {
@@ -33,7 +35,6 @@ function copyData(files, copyCallback) {
     readFile(join(inbox, file), "utf8", (error, data) => {
       if (error) { return console.log("Error: File error");
       } else { 
-      console.log(`current copied content for ${file}: ${data}`)
       copyCallback(data, file);
       }
     })
