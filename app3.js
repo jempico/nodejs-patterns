@@ -18,7 +18,7 @@ const {
     .join("");
   
   
-//Proposal #2 to solve callback hell: with promises.
+//Proposal #3 to solve callback hell: with async await
 
   function readDirectory(dirpath) {
     return new Promise((resolve, reject) => {
@@ -50,17 +50,26 @@ const {
     writeFile(join(outbox, newfile), reverseText(data), error => {
       if (error) { reject("Error: File could not be saved!"); 
       } else { 
-      resolve(`${newfile} was successfully saved in the outbox!`); 
+        resolve(`${newfile} was successfully saved in the outbox!`); 
+
       } 
   })
 })
 }
 
 
-  
-  readDirectory(inbox)
-    .then((files) => files.forEach( (file) => copyData(file)
-      .then((data) => transferData(data, file)
-        .then((res) => console.log(res)
-          ))))
-    .catch((err) => console.log(err));
+async function reverseFiles(x) {
+    try {
+        let files = await readDirectory(x);
+
+        files.forEach(async (file) => {
+            const copiedFiles = await copyData(file)
+            const transferedFiles = await transferData(copiedFiles, file)
+            console.log(transferedFiles);
+        })  
+    } catch (err) {
+        console.log(err);
+    }   
+} 
+
+reverseFiles(inbox);

@@ -21,7 +21,7 @@ const reverseText = str =>
 //Proposal #1 to solve callback hell: with callbacks.
 
 function readDirectory(dirpath, readCallback) {
-  readdir(inbox, (error, files) => {
+  readdir(dirpath, (error, files) => {
     if (error) {
         return console.log("Error: Folder inaccessible")
     } else { 
