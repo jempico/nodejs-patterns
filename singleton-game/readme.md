@@ -1,8 +1,8 @@
-#Singleton Game
+# Singleton Game
 
-##Installation
+## Installation
     npm install
 
-##Usage
+## Usage
     node app.js
     
