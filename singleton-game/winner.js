@@ -10,7 +10,7 @@ function winner() {
             winner = obj.player
         }
     } 
-    console.log(`The winner is: ${winner} ${winner}. Congrats!!!`)
+    console.log(`The winner is: ${winner}. Congrats!!!`)
 }
 
 module.exports = winner;
